@@ -1,26 +1,46 @@
-import {useState} from 'react'
+import { Home, Login, Public, Personal } from './containers/public/'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Routes, Route } from 'react-router-dom'
+import path from './ultis/path';
+import { useEffect } from 'react';
+import * as actions from './store/actions'
+import {useDispatch} from 'react-redux';
+
 
 function App() {
 
-  const [work, setWork] = useState('')
-  
+  const dispatch = useDispatch() 
+    useEffect(() => {
+      dispatch(actions.getHome())
+    })
 
   return (
-    <div className="flex gap-8 h-screen items-center border-red-500 justify-center">
-      <input 
-      type="text" 
-      className="outline-none border border-blue-600 px-4 py-2 w-[400px]"
-      value={work}
-      onChange={e => setWork(e.target.value)}
+    <>
+      <div className="">
+        <Routes>
+          <Route path={path.PUBLIC} element={<Public />} >
+            <Route path={path.HOME} element={<Home />} />
+            <Route path={path.LOGIN} element={<Login />} />
+            <Route path={path.MY_MUSIC} element={<Personal />} />
+
+            <Route path={path.STAR} element={<Login />} />
+          </Route>
+        </Routes>
+      </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
       />
-      <button
-      type="button"
-      className="outline-none px-4 py-2 bg-blue-500 rounded-md text-white"
-      >
-        Add
-      </button>
-    </div>
+    </>
   );
 }
-
 export default App;
